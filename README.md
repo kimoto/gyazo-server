@@ -11,12 +11,14 @@ Gyazo Server ruby implement
 使い方
 ---------------
 rackup
+
     git clone https://github.com/kimoto/gyazo-server.git
     cd ./gyazo-server
     bundle install
     bundle exec rackup
 
 nginx + passenger
+
     git clone https://github.com/kimoto/gyazo-server.git
     vi nginx.conf
     server {
