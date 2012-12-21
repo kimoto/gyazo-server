@@ -46,8 +46,8 @@ module Gyazo
       else
         info.already_exist = false
         File.write(store_full_path, data)
-        if opts[:compress]
-          system("pngquant -ext '_C.png' -force 256 #{store_full_path}")
+        if @opts[:compress]
+          system("pngquant --ext '_C.png' --force 256 #{store_full_path}")
           info.path = "#{info.hexdigest}_C.png"
         end
         return info
