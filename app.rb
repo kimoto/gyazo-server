@@ -17,7 +17,7 @@ class GyazoServer < Sinatra::Base
 
   post '/' do
     data = request[:imagedata][:tempfile].read
-    @info = Gyazo::FileStore.new(settings.image_dir, :logic => settings.digest_logic).put(data)
+    @info = Gyazo::FileStore.new(settings.image_dir, :logic => settings.digest_logic, :compress => true).put(data)
     if @info.already_exists?
       500
     else
