@@ -23,6 +23,7 @@ module Gyazo
     def initialize(base_path, opts={})
       @base_path = base_path
       @logic = opts[:logic] || Digest::MD5
+      @opts = opts
     end
 
     def put(data)
@@ -45,6 +46,10 @@ module Gyazo
       else
         info.already_exist = false
         File.write(store_full_path, data)
+        if opts[:compress]
+          system("pngquant -ext '_C.png' -force 256 #{store_full_path}")
+          info.path = "#{info.hexdigest}_C.png"
+        end
         return info
       end
     end
