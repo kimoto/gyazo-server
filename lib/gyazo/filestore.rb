@@ -22,19 +22,18 @@ module Gyazo
 
     def initialize(base_path, opts={})
       @base_path = base_path
-      @logic = opts[:logic] || Digest::MD5
+      @logic = opts[:logic] || lambda { |data| Digest::MD5.hexdigest(data).to_s }
+      @ext = opts[:ext]
       @opts = opts
     end
 
     def put(data)
       raise ArgumentError if data.nil?
-      hexdigest = @logic.hexdigest(data).to_s
-      head_chars = hexdigest.each_byte.to_a.first(2).map(&:chr)
-
+      hexdigest = @logic.call(data)
       info = FileInfo.new
       info.hexdigest = hexdigest
-      info.dir = head_chars.join("/")
-      info.path = "#{info.hexdigest}.png"
+      info.dir = "./"
+      info.path = "#{info.hexdigest}.#{@ext}"
 
       store_dir = File.join(@base_path, info.dir)
       store_full_path = File.join(store_dir, info.path)
