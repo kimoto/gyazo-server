@@ -81,7 +81,12 @@ class GyazoServer < Sinatra::Base
     else
       data = HTTParty.get(url).body
     end
-    save_to_filesystem data
+    res = save_to_filesystem data
+    if res != 500
+      redirect res
+    else
+      res
+    end
   end
 
   protected
