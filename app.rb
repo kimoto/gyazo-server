@@ -66,7 +66,7 @@ class GyazoServer < Sinatra::Base
     if request[:data]
       save_to_filesystem request[:data][:tempfile].read, "mp4" # gifzoのときはこっち
     else
-      save_to_filesystem request[:imagedata][:tempfile].read, "png" # gyazoのときはこっち
+      save_to_filesystem request[:imagedata][:tempfile].read # gyazoのときはこっち
     end
   end
 
@@ -85,7 +85,7 @@ class GyazoServer < Sinatra::Base
   end
 
   protected
-  def save_to_filesystem(data, ext)
+  def save_to_filesystem(data, ext = "png") 
     store = Gyazo::FileStore.new(settings.image_dir, :logic => lambda{ |data| gen_random_digest}, :ext => ext)
     info = store.put(data)
     if info.already_exists?
